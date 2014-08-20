@@ -123,19 +123,19 @@ class DamerauLevenshtein {
 
 		$oneSize = mb_strlen($this->__compOne, 'UTF-8');
 		$twoSize = mb_strlen($this->__compTwo, 'UTF-8');
-		for ($i = 0; $i <= $oneSize; $i++) {
+		for ($i = 0; $i <= $oneSize; $i += 1) {
 			$this->__matrix[$i][0] = $i > 0 ? $this->__matrix[$i - 1][0] + $this->__delCost : 0;
 		}
 
-		for ($i = 0; $i <= $twoSize; $i++) {
+		for ($i = 0; $i <= $twoSize; $i += 1) {
 			// insertion actualy
 			$this->__matrix[0][$i] = $i > 0 ? $this->__matrix[0][$i - 1] + $this->__insCost : 0;
 		}
 
-		for ($i = 1; $i <= $oneSize; $i++) {
+		for ($i = 1; $i <= $oneSize; $i += 1) {
 			// curchar for the first string
 			$cOne = mb_substr($this->__compOne, $i - 1, 1, 'UTF-8');
-			for ($j = 1; $j <= $twoSize; $j++) {
+			for ($j = 1; $j <= $twoSize; $j += 1) {
 				// curchar for the second string
 				$cTwo = mb_substr($this->__compTwo, $j - 1, 1, 'UTF-8');
 
@@ -251,14 +251,14 @@ class DamerauLevenshtein {
 		$twoSize = mb_strlen($this->__compTwo, 'UTF-8');
 
 		$out = "  " . $this->__compOne . "\n";
-		for ($y = 0; $y <= $twoSize; $y++) {
+		for ($y = 0; $y <= $twoSize; $y += 1) {
 			if ($y - 1 < 0) {
 				$out .= " ";
 			} else {
 				$out .= (mb_substr($this->__compTwo, $y - 1, 1, 'UTF-8'));
 			}
 
-			for ($x = 0; $x <= $oneSize; $x++) {
+			for ($x = 0; $x <= $oneSize; $x += 1) {
 				$out .= $this->__matrix[$x][$y];
 			}
 
