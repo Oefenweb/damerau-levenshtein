@@ -27,13 +27,12 @@ fi
 phpenv rehash;
 
 cat << EOF > phpunit.xml;
-<?xml version="1.0" encoding="UTF-8"?>
 <phpunit>
-<filter>
-	<whitelist>
-		<directory suffix=".php">.</directory>
-	</whitelist>
-</filter>
+  <testsuites>
+    <testsuite name="damerau-levenshtein">
+      <directory>test</directory>
+    </testsuite>
+  </testsuites>
 </phpunit>
 EOF
 
