@@ -128,18 +128,18 @@ class DamerauLevenshtein {
 		}
 
 		for ($i = 0; $i <= $twoSize; $i += 1) {
-			// insertion actualy
+			// Insertion actualy
 			$this->__matrix[0][$i] = $i > 0 ? $this->__matrix[0][$i - 1] + $this->__insCost : 0;
 		}
 
 		for ($i = 1; $i <= $oneSize; $i += 1) {
-			// curchar for the first string
+			// Curchar for the first string
 			$cOne = mb_substr($this->__compOne, $i - 1, 1, 'UTF-8');
 			for ($j = 1; $j <= $twoSize; $j += 1) {
-				// curchar for the second string
+				// Curchar for the second string
 				$cTwo = mb_substr($this->__compTwo, $j - 1, 1, 'UTF-8');
 
-				// compute substitution cost
+				// Compute substitution cost
 				if ($this->_compare($cOne, $cTwo) == 0) {
 					$cost = 0;
 					$trans = 0;
@@ -148,27 +148,26 @@ class DamerauLevenshtein {
 					$trans = $this->__transCost;
 				}
 
-				// deletion cost
+				// Deletion cost
 				$del = $this->__matrix[$i - 1][$j] + $this->__delCost;
 
-				// insertion cost
+				// Insertion cost
 				$ins = $this->__matrix[$i][$j - 1] + $this->__insCost;
 
-				// substitution cost
-				// 0 if same
+				// Substitution cost, 0 if same
 				$sub = $this->__matrix[$i - 1][$j - 1] + $cost;
 
-				// compute optimal
+				// Compute optimal
 				$this->__matrix[$i][$j] = min($del, $ins, $sub);
 
-				// transposition cost
+				// Transposition cost
 				if (($i > 1) && ($j > 1)) {
-					// last two
+					// Last two
 					$ccOne = mb_substr($this->__compOne, $i - 2, 1, 'UTF-8');
 					$ccTwo = mb_substr($this->__compTwo, $j - 2, 1, 'UTF-8');
 
 					if ($this->_compare($cOne, $ccTwo) == 0 && $this->_compare($ccOne, $cTwo) == 0) {
-						// transposition cost is computed as minimal of two
+						// Transposition cost is computed as minimal of two
 						$this->__matrix[$i][$j] = min($this->__matrix[$i][$j], $this->__matrix[$i - 2][$j - 2] + $trans);
 					}
 				}
@@ -176,7 +175,6 @@ class DamerauLevenshtein {
 		}
 
 		$this->__calculated = true;
-		//displayMatrix();
 	}
 
 /**
@@ -191,26 +189,26 @@ class DamerauLevenshtein {
 		$oneSize = mb_strlen($this->__compOne, 'UTF-8');
 		$twoSize = mb_strlen($this->__compTwo, 'UTF-8');
 
-		// amx cost, result value
+		// Amx cost, result value
 		$maxCost = 0;
 
-		// is substitution cheaper that delete+insert?
+		// Is substitution cheaper that delete + insert?
 		$subCost = min($this->__subCost, $this->__delCost + $this->__insCost);
 
-		// get common size
+		// Get common size
 		$minSize = min($oneSize, $twoSize);
 		$maxSize = max($oneSize, $twoSize);
 		$extraSize = $maxSize - $minSize;
 
-		// on common size perform substitution / delete+insert, what is cheaper
+		// On common size perform substitution / delete + insert, what is cheaper
 		$maxCost = $subCost * $minSize;
 
-		// on resulting do insert/delete
+		// On resulting do insert/delete
 		if ($oneSize > $twoSize) {
-			// delete extra characters
+			// Delete extra characters
 			$maxCost += $extraSize * $this->__delCost;
 		} else {
-			// insert extra characters
+			// Insert extra characters
 			$maxCost += $extraSize * $this->__insCost;
 		}
 
