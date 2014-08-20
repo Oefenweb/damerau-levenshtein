@@ -8,8 +8,10 @@ thisFile="$(readlink -f ${0})";
 thisFilePath="$(dirname ${thisFile})";
 #
 
-pear channel-discover pear.symfony.com;
-pear install --alldeps phpunit/PHPUnit;
+pear channel-discover pear.phpunit.de;
+pear channel-discover components.ez.no;
+pear channel-discover pear.symfony-project.com;
+pear install --alldeps --force phpunit/PHPUnit;
 
 composer install --dev --no-interaction --prefer-source;
 
