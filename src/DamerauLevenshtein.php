@@ -183,7 +183,7 @@ class DamerauLevenshtein {
  * On common substring of same length perform substitution / insert + delete
  * (depends on what is cheaper), then on extra characters perform insertion / deletion
  *
- * @return
+ * @return integer
  */
 	public function getMaximalDistance() {
 		$oneSize = mb_strlen($this->__compOne, 'UTF-8');
@@ -218,7 +218,7 @@ class DamerauLevenshtein {
 /**
  * Returns relative distance of input strings (computed with maximal possible distance).
  *
- * @return
+ * @return integer
  */
 	public function getRelativeDistance() {
 		if (!$this->__calculated) {
@@ -233,7 +233,7 @@ class DamerauLevenshtein {
  *
  * @param string $a First character
  * @param string $b Second character
- * @return
+ * @return integer
  */
 	protected function _compare($a, $b) {
 		return strcmp($a, $b);
