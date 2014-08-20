@@ -91,8 +91,8 @@ class DamerauLevenshtein {
  * @return integer[][] matrix
  */
 	public function getMatrix() {
-			$this->__setupMatrix();
-			return $this->__matrix;
+		$this->__setupMatrix();
+		return $this->__matrix;
 	}
 
 /**
@@ -314,7 +314,7 @@ class DamerauLevenshtein {
  * @return integer
  */
 	public function getSubCost() {
-			return $this->__subCost;
+		return $this->__subCost;
 	}
 
 /**
@@ -344,8 +344,8 @@ class DamerauLevenshtein {
  * @return void
  */
 	public function setTransCost($transCost) {
-			$this->__calculated = ($transCost == $this->__transCost) ? $this->__calculated : false;
-			$this->__transCost = $transCost;
+		$this->__calculated = ($transCost == $this->__transCost) ? $this->__calculated : false;
+		$this->__transCost = $transCost;
 	}
 
 }
