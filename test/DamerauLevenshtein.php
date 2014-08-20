@@ -1,5 +1,5 @@
 <?php
-require(dirname(__FILE__) . '/class.damerauLevenshtein.php');
+require('../DamerauLevenshtein.php');
 
 
 $names = array(
@@ -14,16 +14,16 @@ foreach($names as $edexName => $appName) {
 
 /*
 $dl = new DamerauLevenshtein('dk gry', 'dark grey',  1,6,6,1);
-echo "Edit distance: "; 
+echo "Edit distance: ";
 var_dump($dl->getSimilarity());
 
-echo "Similarity, relative: "; 
+echo "Similarity, relative: ";
 var_dump($dl->getRelativeDistance());
 
-echo "Maximum possible edit distance: "; 
+echo "Maximum possible edit distance: ";
 var_dump($dl->getMaximalDistance());
 
-echo "Matrix: \n"; 
+echo "Matrix: \n";
 echo $dl->displayMatrix() . "\n";
 */
 

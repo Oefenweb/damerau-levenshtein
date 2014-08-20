@@ -1,0 +1,28 @@
+{
+	"name": "oefenweb/damerau-levenshtein",
+	"description": "Get text similarity level with Damerau-Levenshtein distance",
+	"type": "library",
+	"keywords": [
+		"damerau", "levenshtein", "distance", "similarity"
+	],
+	"homepage": "http://github.com/Oefenweb/damerau-levenshtein",
+	"license": "BSD",
+	"authors": [
+		{
+			"name": "Ph4r05",
+			"homepage": "http://www.phpclasses.org/package/7021-PHP-Get-text-similarity-level-with-Damerau-Levenshtein.html"
+		},
+		{
+			"name": "Oefenweb.nl BV team",
+			"homepage": "https://github.com/Oefenweb/damerau-levenshtein/contributors"
+		}
+	],
+	"require": {
+		"php": ">=5.3.10",
+		"composer/installers": "~1.0"
+	},
+	"support": {
+		"issues": "https://github.com/Oefenweb/damerau-levenshtein/issues",
+		"source": "https://github.com/Oefenweb/damerau-levenshtein"
+	}
+}
