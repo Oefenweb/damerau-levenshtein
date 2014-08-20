@@ -8,57 +8,56 @@
 class DamerauLevenshtein {
 
 /**
- * First string
+ * First string.
  *
  * @var String
  */
 	private $compOne;
 
 /**
- * Second string
+ * Second string.
  *
  * @var String
  */
 	private $compTwo;
 
 /**
- * Matrix for Damerau Levenshtein distance dynamic programming computation
+ * Matrix for Damerau Levenshtein distance dynamic programming computation.
+ *
  * @var int[][]
  */
 	private $matrix;
 
 /**
- * Boolean flag determining whether is matrix computed for input strings
+ * Boolean flag determining whether is matrix computed for input strings.
  *
  * @var boolean
  */
 	private $calculated = false;
 
 /**
- * Cost of character insertion
- * (to first string to match second string)
+ * Cost of character insertion (to first string to match second string).
  *
  * @var integer
  */
 	private $insCost = 1;
 
 /**
- * Cost of character deletion
- * (from first string to match second string)
+ * Cost of character deletion (from first string to match second string).
  *
  * @var integer
  */
 	private $delCost = 1;
 
 /**
- * Substitution cost
+ * Substitution cost.
  *
  * @var integer
  */
 	private $subCost = 1;
 
 /**
- * Transposition cost
+ * Transposition cost.
  *
  * @var integer
  */
@@ -69,10 +68,10 @@ class DamerauLevenshtein {
  *
  * @param string $a first string to compute distance
  * @param string $b second string to compute distance
- * @param integer $insCost
- * @param integer $delCost
- * @param integer $subCost
- * @param integer $transCost
+ * @param integer $insCost Cost of character insertion
+ * @param integer $delCost Cost of character deletion
+ * @param integer $subCost Substitution cost
+ * @param integer $transCost Transposition cost
  */
 	public function __construct($a, $b, $insCost = 1, $delCost = 1, $subCost = 1, $transCost = 1) {
 		if (!empty($a) || !empty($b)) {
@@ -87,7 +86,7 @@ class DamerauLevenshtein {
 	}
 
 /**
- * Returns computed matrix for given input strings
+ * Returns computed matrix for given input strings.
  *
  * @return integer[][] matrix
  */
@@ -97,7 +96,7 @@ class DamerauLevenshtein {
 	}
 
 /**
- * Returns similarity of strings, absolute number = Damerau Levenshtein distance
+ * Returns similarity of strings, absolute number = Damerau Levenshtein distance.
  *
  * @return integer
  */
@@ -110,7 +109,7 @@ class DamerauLevenshtein {
 	}
 
 /**
- * Procedure to compute matrix for given input strings
+ * Procedure to compute matrix for given input strings.
  *
  * @return void
  */
@@ -183,8 +182,8 @@ class DamerauLevenshtein {
 /**
  * Returns maximal possible edit Damerau Levenshtein distance between texts.
  *
- * On common substring of same length perform substitution / insert+delete
- * (depends on what is cheaper), then on extra characters perform insertion/deletion
+ * On common substring of same length perform substitution / insert + delete
+ * (depends on what is cheaper), then on extra characters perform insertion / deletion
  *
  * @return
  */
@@ -219,9 +218,7 @@ class DamerauLevenshtein {
 	}
 
 /**
- * Returns relative distance of input strings
- *
- * (Computed with maximal possible distance)
+ * Returns relative distance of input strings (computed with maximal possible distance).
  *
  * @return
  */
@@ -234,11 +231,10 @@ class DamerauLevenshtein {
 	}
 
 /**
- * Compares two characters from string
- * (this method may be overriden in child class)
+ * Compares two characters from string (this method may be overriden in child class).
  *
- * @param string $a
- * @param string $b
+ * @param string $a First character
+ * @param string $b Second character
  * @return
  */
 	protected function compare($a, $b) {
@@ -246,8 +242,7 @@ class DamerauLevenshtein {
 	}
 
 /**
- * Returns computed matrix for given input strings
- * (For debugging purposes)
+ * Returns computed matrix for given input strings (For debugging purposes).
  *
  * @return string
  */
@@ -274,7 +269,7 @@ class DamerauLevenshtein {
 	}
 
 /**
- * Returns current cost of insertion operation
+ * Returns current cost of insertion operation.
  *
  * @return integer
  */
@@ -283,10 +278,9 @@ class DamerauLevenshtein {
 	}
 
 /**
- * Sets cost of insertion operation.
- * (Insert characters to first string to match second string)
+ * Sets cost of insertion operation (insert characters to first string to match second string).
  *
- * @param integer $insCost
+ * @param integer $insCost Cost of character insertion
  * @return void
  */
 	public function setInsCost($insCost) {
@@ -295,7 +289,7 @@ class DamerauLevenshtein {
 	}
 
 /**
- * Returns current cost of deletion operation
+ * Returns current cost of deletion operation.
  *
  * @return integer
  */
@@ -304,10 +298,9 @@ class DamerauLevenshtein {
 	}
 
 /**
- * Sets cost of deletion operation.
- * (Delete characters from first string to match second string)
+ * Sets cost of deletion operation (delete characters from first string to match second string).
  *
- * @param integer $delCost
+ * @param integer $delCost Cost of character deletion
  * @return void
  */
 	public function setDelCost($delCost) {
@@ -316,7 +309,7 @@ class DamerauLevenshtein {
 	}
 
 /**
- * Returns current cost of substitution operation
+ * Returns current cost of substitution operation.
  *
  * @return integer
  */
@@ -327,7 +320,7 @@ class DamerauLevenshtein {
 /**
  * Sets cost of substitution operation.
  *
- * @param integer $subCost
+ * @param integer $subCost Cost of character substitution
  * @return void
  */
 	public function setSubCost($subCost) {
@@ -336,7 +329,7 @@ class DamerauLevenshtein {
 	}
 
 /**
- * Returns current cost of transposition operation
+ * Returns current cost of transposition operation.
  *
  * @return integer
  */
@@ -347,7 +340,7 @@ class DamerauLevenshtein {
 /**
  * Sets cost of transposition operation.
  *
- * @param integer $transCost
+ * @param integer $transCost Cost of character transposition
  * @return void
  */
 	public function setTransCost($transCost) {
