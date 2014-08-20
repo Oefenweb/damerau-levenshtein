@@ -1,25 +1,9 @@
 <?php
 /**
-	* Compute Damerau-Levenshtein distance of two strings
+	* Compute Damerau-Levenshtein distance of two strings.
 	*
 	* For more information about algorithm
 	* @see http://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance
-	*
-	* First word will be matched against second word to match it.
-	*
-	* Insert/delete cost is computed this way:
-	* wht vs. white = insertion to the first string is performed to meet second string
-	*
-	* USAGE:
-	*          $dl = new DamerauLevenshtein('dk gr', 'dark grey',  1,6,6,1);
-	*          // to get absolute Damerau-Levenshtein edit distance
-	*          $dl->getSimilarity();
-	*          // to get relative similarity between texts based on Damerau-Levenshtein edit distance
-	*          // according to specified operation costs
-	*          $dl->getRelativeDistance();
-	*
-	* @author ph4r05
-	* @license Lesser General Public License v3, http://www.gnu.org/licenses/lgpl.html
 	*/
 class DamerauLevenshtein {
 
