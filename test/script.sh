@@ -8,6 +8,9 @@ thisFile="$(readlink -f ${0})";
 thisFilePath="$(dirname ${thisFile})";
 #
 
+echo "${thisFilePath}";
+ls -lha -R;
+
 if [ "${PHPCS}" = '1' ]; then
 	phpcs --standard=CakePHP -n .;
 elif [ "${COVERALLS}" = 1 ]; then
