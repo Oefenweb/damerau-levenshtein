@@ -4,7 +4,7 @@ require sprintf('%s/../src/DamerauLevenshtein.php', dirname(__FILE__));
 class DamerauLevenshteinTest extends PHPUnit_Framework_TestCase {
 
 /**
- * Test for getSimilarity.
+ * Test for `getSimilarity`.
  *
  * @return void
  */
@@ -53,7 +53,136 @@ class DamerauLevenshteinTest extends PHPUnit_Framework_TestCase {
 			$result = $DamerauLevenshtein->getSimilarity();
 			$expected = $outputs[$i];
 
-			$this->assertEquals($expected, $result);
+			$this->assertSame($expected, $result);
 		}
 	}
+
+/**
+ * Test for `getInsCost`.
+ *
+ * @return void
+ */
+	public function testGetInsCost() {
+		$firstString = 'foo';
+		$secondString = 'bar';
+		$insCost = 1;
+		$delCost = 1;
+		$subCost = 1;
+		$transCost = 1;
+
+		// Default insert cost
+
+		$DamerauLevenshtein = new DamerauLevenshtein($firstString, $secondString);
+		$result = $DamerauLevenshtein->getInsCost();
+		$expected = $insCost;
+
+		$this->assertSame($expected, $result);
+
+		// Non-default insert cost
+
+		$insCost = 2;
+
+		$DamerauLevenshtein = new DamerauLevenshtein($firstString, $secondString, $insCost, $delCost, $subCost, $transCost);
+		$result = $DamerauLevenshtein->getInsCost();
+		$expected = $insCost;
+
+		$this->assertSame($expected, $result);
+	}
+
+/**
+ * Test for `getDelCost`.
+ *
+ * @return void
+ */
+	public function testGetDelCost() {
+		$firstString = 'foo';
+		$secondString = 'bar';
+		$insCost = 1;
+		$delCost = 1;
+		$subCost = 1;
+		$transCost = 1;
+
+		// Default delete cost
+
+		$DamerauLevenshtein = new DamerauLevenshtein($firstString, $secondString);
+		$result = $DamerauLevenshtein->getDelCost();
+		$expected = $delCost;
+
+		$this->assertSame($expected, $result);
+
+		// Non-default delete cost
+
+		$delCost = 2;
+
+		$DamerauLevenshtein = new DamerauLevenshtein($firstString, $secondString, $insCost, $delCost, $subCost, $transCost);
+		$result = $DamerauLevenshtein->getDelCost();
+		$expected = $delCost;
+
+		$this->assertSame($expected, $result);
+	}
+
+/**
+ * Test for `getSubCost`.
+ *
+ * @return void
+ */
+	public function testGetSubCost() {
+		$firstString = 'foo';
+		$secondString = 'bar';
+		$insCost = 1;
+		$delCost = 1;
+		$subCost = 1;
+		$transCost = 1;
+
+		// Default substitution cost
+
+		$DamerauLevenshtein = new DamerauLevenshtein($firstString, $secondString);
+		$result = $DamerauLevenshtein->getSubCost();
+		$expected = $subCost;
+
+		$this->assertSame($expected, $result);
+
+		// Non-default substitution cost
+
+		$subCost = 2;
+
+		$DamerauLevenshtein = new DamerauLevenshtein($firstString, $secondString, $insCost, $delCost, $subCost, $transCost);
+		$result = $DamerauLevenshtein->getSubCost();
+		$expected = $subCost;
+
+		$this->assertSame($expected, $result);
+	}
+
+/**
+ * Test for `getTransCost`.
+ *
+ * @return void
+ */
+	public function testGetTransCost() {
+		$firstString = 'foo';
+		$secondString = 'bar';
+		$insCost = 1;
+		$delCost = 1;
+		$subCost = 1;
+		$transCost = 1;
+
+		// Default transposition cost
+
+		$DamerauLevenshtein = new DamerauLevenshtein($firstString, $secondString);
+		$result = $DamerauLevenshtein->getTransCost();
+		$expected = $transCost;
+
+		$this->assertSame($expected, $result);
+
+		// Non-default transposition cost
+
+		$transCost = 2;
+
+		$DamerauLevenshtein = new DamerauLevenshtein($firstString, $secondString, $insCost, $delCost, $subCost, $transCost);
+		$result = $DamerauLevenshtein->getTransCost();
+		$expected = $transCost;
+
+		$this->assertSame($expected, $result);
+	}
+
 }
