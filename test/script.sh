@@ -12,7 +12,7 @@ echo "${thisFilePath}";
 ls -lha -R;
 
 if [ "${PHPCS}" = '1' ]; then
-	phpcs --standard=CakePHP -n .;
+	phpcs --standard=CakePHP -n src;
 elif [ "${COVERALLS}" = 1 ]; then
 	phpunit --stderr --coverage-clover build/logs/clover.xml --configuration phpunit.xml;
 else
