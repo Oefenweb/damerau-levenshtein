@@ -13,3 +13,7 @@ Get text similarity level with Damerau-Levenshtein distance.
 ## License
 
 BSD
+
+#### Author Information
+
+Mischa ter Smitten (based on work of [Ph4r05](http://www.phpclasses.org/package/7021-PHP-Get-text-similarity-level-with-Damerau-Levenshtein.html))
