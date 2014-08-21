@@ -64,19 +64,19 @@ class DamerauLevenshtein {
 	private $__transCost = 1;
 
 /**
- * Constructor
+ * Constructor.
  *
- * @param string $a first string to compute distance
- * @param string $b second string to compute distance
+ * @param string $firstString first string to compute distance
+ * @param string $secondString second string to compute distance
  * @param integer $insCost Cost of character insertion
  * @param integer $delCost Cost of character deletion
  * @param integer $subCost Substitution cost
  * @param integer $transCost Transposition cost
  */
-	public function __construct($a, $b, $insCost = 1, $delCost = 1, $subCost = 1, $transCost = 1) {
-		if (!empty($a) || !empty($b)) {
-			$this->__compOne = $a;
-			$this->__compTwo = $b;
+	public function __construct($firstString, $secondString, $insCost = 1, $delCost = 1, $subCost = 1, $transCost = 1) {
+		if (!empty($firstString) || !empty($secondString)) {
+			$this->__compOne = $firstString;
+			$this->__compTwo = $secondString;
 		}
 
 		$this->__insCost = $insCost;
@@ -231,12 +231,12 @@ class DamerauLevenshtein {
 /**
  * Compares two characters from string (this method may be overriden in child class).
  *
- * @param string $a First character
- * @param string $b Second character
+ * @param string $firstCharacter First character
+ * @param string $secondCharacter Second character
  * @return integer
  */
-	protected function _compare($a, $b) {
-		return strcmp($a, $b);
+	protected function _compare($firstCharacter, $secondCharacter) {
+		return strcmp($firstCharacter, $secondCharacter);
 	}
 
 /**
