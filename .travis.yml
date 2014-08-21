@@ -16,13 +16,13 @@ matrix:
         - PHPCS=1
 
 before_script:
-  - test/before-script.sh
+  - .travis/before-script.sh
 
 script:
-  - test/script.sh
+  - .travis/script.sh
 
 after_success:
-  - test/after-success.sh
+  - .travis/after-success.sh
 
 notifications:
   email: false
