@@ -1,4 +1,6 @@
-# Damerau Levenshtein: Get text similarity level with Damerau-Levenshtein
+# Damerau Levenshtein
+
+Get text similarity level with Damerau-Levenshtein distance.
 
 ## Requirements
 
