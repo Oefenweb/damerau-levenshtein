@@ -24,5 +24,10 @@
 	"support": {
 		"issues": "https://github.com/Oefenweb/damerau-levenshtein/issues",
 		"source": "https://github.com/Oefenweb/damerau-levenshtein"
+	},
+	"autoload": {
+		"classmap": [
+			"src"
+		]
 	}
 }
