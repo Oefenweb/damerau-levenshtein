@@ -185,4 +185,54 @@ class DamerauLevenshteinTest extends PHPUnit_Framework_TestCase {
 		$this->assertSame($expected, $result);
 	}
 
+/**
+ * Test for `getRelativeDistance`.
+ *
+ * @return void
+ */
+	public function testGetRelativeDistance() {
+		$delta = pow(10, -4);
+
+		$firstString = 'O\'Callaghan';
+		$secondString = 'OCallaghan';
+
+		$DamerauLevenshtein = new DamerauLevenshtein($firstString, $secondString);
+		$result = $DamerauLevenshtein->getRelativeDistance();
+		$expected = 0.90909090909091;
+		$this->assertEquals($expected, $result, '', $delta);
+
+		$firstString = 'Thom';
+		$secondString = 'Mira';
+
+		$DamerauLevenshtein = new DamerauLevenshtein($firstString, $secondString);
+		$result = $DamerauLevenshtein->getRelativeDistance();
+		$expected = 0.0;
+		$this->assertEquals($expected, $result, '', $delta);
+
+		$firstString = 'Oldeboom';
+		$secondString = 'Ven';
+
+		$DamerauLevenshtein = new DamerauLevenshtein($firstString, $secondString);
+		$result = $DamerauLevenshtein->getRelativeDistance();
+		$expected = 0.125;
+		$this->assertEquals($expected, $result, '', $delta);
+
+		$firstString = 'ven';
+		$secondString = 'Ven';
+
+		$DamerauLevenshtein = new DamerauLevenshtein($firstString, $secondString);
+		$result = $DamerauLevenshtein->getRelativeDistance();
+		$expected = 0.66666666666667;
+		$this->assertEquals($expected, $result, '', $delta);
+
+		$firstString = 'enV';
+		$secondString = 'Ven';
+
+		$DamerauLevenshtein = new DamerauLevenshtein($firstString, $secondString);
+		$result = $DamerauLevenshtein->getRelativeDistance();
+		$expected = 0.33333333333333;
+		$this->assertEquals($expected, $result, '', $delta);
+	}
+
 }
+
