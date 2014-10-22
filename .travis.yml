@@ -26,3 +26,6 @@ after_success:
 
 notifications:
   email: false
+  hipchat:
+    rooms:
+      secure: UbWCzOYDqLB92Me90Ny/NfRTn0C17/Q1w3Osm5Cxlqaz2WE0/DiJVPvNcK8gDvyQx4HN+v8XerQU+HX1Lx7YqaZAYYq1OiAwXvqpzovxEV5n38D95LnaXM8RmX2UbNBlmnaraF2INaounmhErWc9nA0022gwBG9TueOTFVuiDmk=
