@@ -31,35 +31,35 @@ class DamerauLevenshtein {
 /**
  * Boolean flag determining whether is matrix computed for input strings.
  *
- * @var boolean
+ * @var bool
  */
 	private $__calculated = false;
 
 /**
  * Cost of character insertion (to first string to match second string).
  *
- * @var integer
+ * @var int
  */
 	private $__insCost = 1;
 
 /**
  * Cost of character deletion (from first string to match second string).
  *
- * @var integer
+ * @var int
  */
 	private $__delCost = 1;
 
 /**
  * Substitution cost.
  *
- * @var integer
+ * @var int
  */
 	private $__subCost = 1;
 
 /**
  * Transposition cost.
  *
- * @var integer
+ * @var int
  */
 	private $__transCost = 1;
 
@@ -68,10 +68,10 @@ class DamerauLevenshtein {
  *
  * @param string $firstString first string to compute distance
  * @param string $secondString second string to compute distance
- * @param integer $insCost Cost of character insertion
- * @param integer $delCost Cost of character deletion
- * @param integer $subCost Substitution cost
- * @param integer $transCost Transposition cost
+ * @param int $insCost Cost of character insertion
+ * @param int $delCost Cost of character deletion
+ * @param int $subCost Substitution cost
+ * @param int $transCost Transposition cost
  */
 	public function __construct($firstString, $secondString, $insCost = 1, $delCost = 1, $subCost = 1, $transCost = 1) {
 		if (!empty($firstString) || !empty($secondString)) {
@@ -88,7 +88,7 @@ class DamerauLevenshtein {
 /**
  * Returns computed matrix for given input strings.
  *
- * @return integer[][] matrix
+ * @return int[][] matrix
  */
 	public function getMatrix() {
 		$this->__setupMatrix();
@@ -98,7 +98,7 @@ class DamerauLevenshtein {
 /**
  * Returns similarity of strings, absolute number = Damerau Levenshtein distance.
  *
- * @return integer
+ * @return int
  */
 	public function getSimilarity() {
 		if (!$this->__calculated) {
@@ -183,7 +183,7 @@ class DamerauLevenshtein {
  * On common substring of same length perform substitution / insert + delete
  * (depends on what is cheaper), then on extra characters perform insertion / deletion
  *
- * @return integer
+ * @return int
  */
 	public function getMaximalDistance() {
 		$oneSize = mb_strlen($this->__compOne, 'UTF-8');
@@ -218,7 +218,7 @@ class DamerauLevenshtein {
 /**
  * Returns relative distance of input strings (computed with maximal possible distance).
  *
- * @return integer
+ * @return int
  */
 	public function getRelativeDistance() {
 		if (!$this->__calculated) {
@@ -233,7 +233,7 @@ class DamerauLevenshtein {
  *
  * @param string $firstCharacter First character
  * @param string $secondCharacter Second character
- * @return integer
+ * @return int
  */
 	protected function _compare($firstCharacter, $secondCharacter) {
 		return strcmp($firstCharacter, $secondCharacter);
@@ -269,7 +269,7 @@ class DamerauLevenshtein {
 /**
  * Returns current cost of insertion operation.
  *
- * @return integer
+ * @return int
  */
 	public function getInsCost() {
 		return $this->__insCost;
@@ -278,7 +278,7 @@ class DamerauLevenshtein {
 /**
  * Sets cost of insertion operation (insert characters to first string to match second string).
  *
- * @param integer $insCost Cost of character insertion
+ * @param int $insCost Cost of character insertion
  * @return void
  */
 	public function setInsCost($insCost) {
@@ -289,7 +289,7 @@ class DamerauLevenshtein {
 /**
  * Returns current cost of deletion operation.
  *
- * @return integer
+ * @return int
  */
 	public function getDelCost() {
 		return $this->__delCost;
@@ -298,7 +298,7 @@ class DamerauLevenshtein {
 /**
  * Sets cost of deletion operation (delete characters from first string to match second string).
  *
- * @param integer $delCost Cost of character deletion
+ * @param int $delCost Cost of character deletion
  * @return void
  */
 	public function setDelCost($delCost) {
@@ -309,7 +309,7 @@ class DamerauLevenshtein {
 /**
  * Returns current cost of substitution operation.
  *
- * @return integer
+ * @return int
  */
 	public function getSubCost() {
 		return $this->__subCost;
@@ -318,7 +318,7 @@ class DamerauLevenshtein {
 /**
  * Sets cost of substitution operation.
  *
- * @param integer $subCost Cost of character substitution
+ * @param int $subCost Cost of character substitution
  * @return void
  */
 	public function setSubCost($subCost) {
@@ -329,7 +329,7 @@ class DamerauLevenshtein {
 /**
  * Returns current cost of transposition operation.
  *
- * @return integer
+ * @return int
  */
 	public function getTransCost() {
 		return $this->__transCost;
@@ -338,7 +338,7 @@ class DamerauLevenshtein {
 /**
  * Sets cost of transposition operation.
  *
- * @param integer $transCost Cost of character transposition
+ * @param int $transCost Cost of character transposition
  * @return void
  */
 	public function setTransCost($transCost) {
