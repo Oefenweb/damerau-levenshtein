@@ -7,7 +7,7 @@ set -o pipefail;
 thisFile="$(readlink -f ${0})";
 thisFilePath="$(dirname ${thisFile})";
 #
-composer global require --dev "phpunit/phpunit=3.7.*"
+composer global require --dev "phpunit/phpunit=4.*"
 
 composer install --dev --no-interaction --prefer-source;
 
