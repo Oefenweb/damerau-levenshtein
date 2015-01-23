@@ -8,9 +8,9 @@ thisFile="$(readlink -f ${0})";
 thisFilePath="$(dirname ${thisFile})";
 #
 if [ "${PHPCS}" = '1' ]; then
-	phpcs --standard=CakePHP -n src;
+	~/.composer/vendor/bin/phpcs --standard=CakePHP -n src;
 elif [ "${COVERALLS}" = 1 ]; then
-	phpunit --stderr --coverage-clover build/logs/clover.xml --configuration phpunit.xml;
+	~/.composer/vendor/bin/phpunit --stderr --coverage-clover build/logs/clover.xml --configuration phpunit.xml;
 else
-	phpunit --stderr --configuration phpunit.xml;
+	~/.composer/vendor/bin/phpunit --stderr --configuration phpunit.xml;
 fi
