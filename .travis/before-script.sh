@@ -12,7 +12,7 @@ composer global require --dev "phpunit/phpunit=4.*"
 composer install --dev --no-interaction --prefer-source;
 
 if [ "${COVERALLS}" = '1' ]; then
-	composer require --dev satooshi/php-coveralls:dev-master;
+	composer global require --dev satooshi/php-coveralls:dev-master;
 fi
 
 if [ "${PHPCS}" = '1' ]; then
