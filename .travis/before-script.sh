@@ -21,20 +21,3 @@ if [ "${PHPCS}" = '1' ]; then
 fi
 
 phpenv rehash;
-
-cat << EOF > phpunit.xml;
-<phpunit>
-  <testsuites>
-    <testsuite name="damerau-levenshtein">
-      <directory>test</directory>
-    </testsuite>
-  </testsuites>
-</phpunit>
-EOF
-
-cat << EOF > .coveralls.yml
-# for php-coveralls
-src_dir: src
-coverage_clover: build/logs/clover.xml
-json_path: build/logs/coveralls-upload.json
-EOF
