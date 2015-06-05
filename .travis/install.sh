@@ -14,8 +14,9 @@ if [ "${PHPCS}" = '1' ]; then
 
   composer global config repositories.Oefenweb/cakephp-codesniffer vcs https://github.com/Oefenweb/cakephp-codesniffer;
   composer global require --dev 'oefenweb/cakephp-codesniffer:dev-master';
-elif [ "${COVERALLS}" = '1' ]; then
-  composer global require --dev 'satooshi/php-coveralls:dev-master';
 else
   composer global require --dev 'phpunit/phpunit=4.*';
+  if [ "${COVERALLS}" = '1' ]; then
+    composer global require --dev 'satooshi/php-coveralls:dev-master';
+  fi
 fi
