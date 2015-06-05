@@ -21,6 +21,7 @@ matrix:
 cache:
   directories:
     - vendor
+    - $HOME/.composer/vendor
 
 install: .travis/install.sh
 script: .travis/script.sh
