@@ -7,12 +7,10 @@
 	],
 	"homepage": "http://github.com/Oefenweb/damerau-levenshtein",
 	"license": "BSD",
-	"authors": [
-		{
+	"authors": [{
 			"name": "Ph4r05",
 			"homepage": "http://www.phpclasses.org/package/7021-PHP-Get-text-similarity-level-with-Damerau-Levenshtein.html"
-		},
-		{
+		}, {
 			"name": "Oefenweb.nl BV team",
 			"homepage": "https://github.com/Oefenweb/damerau-levenshtein/contributors"
 		}
@@ -24,8 +22,14 @@
 	"require-dev": {
 		"phpunit/phpunit": "4.*",
 		"satooshi/php-coveralls": "dev-master",
-		"cakephp/cakephp-codesniffer": "1.*"
+		"cakephp/cakephp-codesniffer": "1.*",
+		"oefenweb/cakephp-codesniffer": "dev-master"
 	},
+	"repositories": [{
+			"type": "vcs",
+			"url": "https://github.com/Oefenweb/cakephp-codesniffer"
+		}
+	],
 	"support": {
 		"issues": "https://github.com/Oefenweb/damerau-levenshtein/issues",
 		"source": "https://github.com/Oefenweb/damerau-levenshtein"
