@@ -8,7 +8,7 @@ thisFile="$(readlink -f ${0})";
 thisFilePath="$(dirname ${thisFile})";
 #
 if [ "${PHPCS}" = '1' ]; then
-	vendor/bin/phpcs --config-set installed_paths ~/.composer/vendor/cakephp/cakephp-codesniffer;
+	vendor/bin/phpcs --config-set installed_paths vendor/cakephp/cakephp-codesniffer;
 	vendor/bin/phpcs --standard=CakePHP -n src;
 elif [ "${COVERALLS}" = 1 ]; then
 	vendor/bin/phpunit --stderr --configuration phpunit.xml --coverage-clover build/logs/clover.xml;
