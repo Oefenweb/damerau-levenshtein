@@ -23,7 +23,7 @@ cache:
     - vendor
     - $HOME/.composer/vendor
 
-install: .travis/install.sh
+before_script: .travis/before-script.sh
 script: .travis/script.sh
 after_success: .travis/after-success.sh
 
