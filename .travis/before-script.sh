@@ -7,6 +7,7 @@ set -o pipefail;
 thisFile="$(readlink -f ${0})";
 thisFilePath="$(dirname ${thisFile})";
 #
+composer self-update;
 composer install --no-ansi --no-progress --no-interaction --prefer-source;
 
 if [ "${PHPCS}" = '1' ]; then
@@ -19,6 +20,8 @@ else
   if [ "${COVERALLS}" = '1' ]; then
     composer global require --dev 'satooshi/php-coveralls:dev-master';
 
-    printf "src_dir: src\ncoverage_clover: build/logs/clover.xml\njson_path: build/logs/coveralls-upload.json" > .coveralls.yml
+    printf '# for php-coveralls\nsrc_dir: src\ncoverage_clover: build/logs/clover.xml\njson_path: build/logs/coveralls-upload.json\n' > .coveralls.yml;
+		ls -lha .;
+		cat .coveralls.yml;
   fi
 fi
