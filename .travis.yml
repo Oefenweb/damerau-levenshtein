@@ -18,14 +18,13 @@ matrix:
       env:
         - PHPCS=1
 
-before_script:
-  - .travis/before-script.sh
+cache:
+  directories:
+    - vendor
 
-script:
-  - .travis/script.sh
-
-after_success:
-  - .travis/after-success.sh
+install: .travis/install.sh
+script: .travis/script.sh
+after_success: .travis/after-success.sh
 
 notifications:
   email: false

@@ -7,6 +7,5 @@ set -o pipefail;
 thisFile="$(readlink -f ${0})";
 thisFilePath="$(dirname ${thisFile})";
 #
-if [ "${COVERALLS}" = '1' ]; then
-	vendor/bin/coveralls -c .coveralls.yml -v;
-fi
+
+travis_retry composer install --no-ansi --no-progress --no-interaction --prefer-source;

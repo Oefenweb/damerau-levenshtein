@@ -21,6 +21,11 @@
 		"php": ">=5.3.10",
 		"composer/installers": "~1.0"
 	},
+	"require-dev": {
+		"phpunit/phpunit": "4.*",
+		"satooshi/php-coveralls": "dev-master",
+		"cakephp/cakephp-codesniffer": "1.*"
+	},
 	"support": {
 		"issues": "https://github.com/Oefenweb/damerau-levenshtein/issues",
 		"source": "https://github.com/Oefenweb/damerau-levenshtein"
