@@ -8,4 +8,4 @@ thisFile="$(readlink -f ${0})";
 thisFilePath="$(dirname ${thisFile})";
 #
 
-travis_retry composer install --no-ansi --no-progress --no-interaction --prefer-source;
+composer install --no-ansi --no-progress --no-interaction --prefer-source;
