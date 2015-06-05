@@ -11,13 +11,13 @@ composer self-update;
 composer install --no-ansi --no-progress --no-interaction --prefer-source;
 
 if [ "${PHPCS}" = '1' ]; then
-  composer global require --dev 'cakephp/cakephp-codesniffer=1.*';
+  composer require --dev 'cakephp/cakephp-codesniffer=1.*';
 
-  composer global config repositories.Oefenweb/cakephp-codesniffer vcs https://github.com/Oefenweb/cakephp-codesniffer;
-  composer global require --dev 'oefenweb/cakephp-codesniffer:dev-master';
+  composer config repositories.Oefenweb/cakephp-codesniffer vcs https://github.com/Oefenweb/cakephp-codesniffer;
+  composer require --dev 'oefenweb/cakephp-codesniffer:dev-master';
 else
-  composer global require --dev 'phpunit/phpunit=4.*';
+  composer require --dev 'phpunit/phpunit=4.*';
   if [ "${COVERALLS}" = '1' ]; then
-    composer global require --dev 'satooshi/php-coveralls:dev-master';
+    composer require --dev 'satooshi/php-coveralls:dev-master';
   fi
 fi

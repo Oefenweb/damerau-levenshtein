@@ -19,11 +19,6 @@ matrix:
       env:
         - PHPCS=1
 
-cache:
-  directories:
-    - vendor
-    - $HOME/.composer/vendor
-
 before_script: .travis/before-script.sh
 script: .travis/script.sh
 after_success: .travis/after-success.sh

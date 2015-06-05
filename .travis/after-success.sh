@@ -8,5 +8,5 @@ thisFile="$(readlink -f ${0})";
 thisFilePath="$(dirname ${thisFile})";
 #
 if [ "${COVERALLS}" = '1' ]; then
-  ~/.composer/vendor/bin/coveralls -c .coveralls.yml -v;
+  vendor/bin/coveralls -c .coveralls.yml -v;
 fi
