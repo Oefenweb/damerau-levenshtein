@@ -66,12 +66,8 @@ class DamerauLevenshteinTest extends PHPUnit_Framework_TestCase {
  * @return void
  */
 	public function testGetInsCost() {
-		$firstString = 'foo';
-		$secondString = 'bar';
-		$insCost = 1;
-		$delCost = 1;
-		$subCost = 1;
-		$transCost = 1;
+		list($firstString, $secondString) = $this->_getDefaultStrings();
+		list($insCost, $delCost, $subCost, $transCost) = $this->_getDefaultCosts();
 
 		// Default insert cost
 
@@ -98,12 +94,8 @@ class DamerauLevenshteinTest extends PHPUnit_Framework_TestCase {
  * @return void
  */
 	public function testGetDelCost() {
-		$firstString = 'foo';
-		$secondString = 'bar';
-		$insCost = 1;
-		$delCost = 1;
-		$subCost = 1;
-		$transCost = 1;
+		list($firstString, $secondString) = $this->_getDefaultStrings();
+		list($insCost, $delCost, $subCost, $transCost) = $this->_getDefaultCosts();
 
 		// Default delete cost
 
@@ -130,12 +122,8 @@ class DamerauLevenshteinTest extends PHPUnit_Framework_TestCase {
  * @return void
  */
 	public function testGetSubCost() {
-		$firstString = 'foo';
-		$secondString = 'bar';
-		$insCost = 1;
-		$delCost = 1;
-		$subCost = 1;
-		$transCost = 1;
+		list($firstString, $secondString) = $this->_getDefaultStrings();
+		list($insCost, $delCost, $subCost, $transCost) = $this->_getDefaultCosts();
 
 		// Default substitution cost
 
@@ -162,12 +150,8 @@ class DamerauLevenshteinTest extends PHPUnit_Framework_TestCase {
  * @return void
  */
 	public function testGetTransCost() {
-		$firstString = 'foo';
-		$secondString = 'bar';
-		$insCost = 1;
-		$delCost = 1;
-		$subCost = 1;
-		$transCost = 1;
+		list($firstString, $secondString) = $this->_getDefaultStrings();
+		list($insCost, $delCost, $subCost, $transCost) = $this->_getDefaultCosts();
 
 		// Default transposition cost
 
@@ -237,5 +221,30 @@ class DamerauLevenshteinTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($expected, $result, '', $delta);
 	}
 
-}
+/**
+ * Returns the default costs.
+ *
+ * @return array Costs (insert, delete, substitution, transposition)
+ */
+	protected function _getDefaultCosts() {
+		$insCost = 1;
+		$delCost = 1;
+		$subCost = 1;
+		$transCost = 1;
 
+		return array($insCost, $delCost, $subCost, $transCost);
+	}
+
+/**
+ * Returns the default strings.
+ *
+ * @return array Strings (foo, bar)
+ */
+	protected function _getDefaultStrings() {
+		$firstString = 'foo';
+		$secondString = 'bar';
+
+		return array($firstString, $secondString);
+	}
+
+}
