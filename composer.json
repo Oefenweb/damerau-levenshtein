@@ -7,12 +7,10 @@
 	],
 	"homepage": "http://github.com/Oefenweb/damerau-levenshtein",
 	"license": "BSD",
-	"authors": [
-		{
+	"authors": [{
 			"name": "Ph4r05",
 			"homepage": "http://www.phpclasses.org/package/7021-PHP-Get-text-similarity-level-with-Damerau-Levenshtein.html"
-		},
-		{
+		}, {
 			"name": "Oefenweb.nl BV team",
 			"homepage": "https://github.com/Oefenweb/damerau-levenshtein/contributors"
 		}
@@ -26,8 +24,13 @@
 		"source": "https://github.com/Oefenweb/damerau-levenshtein"
 	},
 	"autoload": {
-		"classmap": [
-			"src"
-		]
+		"psr-4": {
+			"Oefenweb\\DamerauLevenshtein\\": "src"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Oefenweb\\DamerauLevenshtein\\Test\\": "tests"
+		}
 	}
 }

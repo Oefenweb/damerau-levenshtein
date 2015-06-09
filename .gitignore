@@ -22,3 +22,5 @@ Thumbs.db
 ###############
 !empty
 /node_modules
+/build
+/vendor
