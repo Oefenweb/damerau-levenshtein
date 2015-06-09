@@ -24,8 +24,13 @@
 		"source": "https://github.com/Oefenweb/damerau-levenshtein"
 	},
 	"autoload": {
-		"classmap": [
-			"src"
-		]
+		"psr-4": {
+			"Oefenweb\\DamerauLevenshtein\\": "src"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Oefenweb\\DamerauLevenshtein\\Test\\": "tests"
+		}
 	}
 }

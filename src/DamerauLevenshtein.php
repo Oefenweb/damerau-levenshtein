@@ -1,4 +1,6 @@
 <?php
+namespace Oefenweb\DamerauLevenshtein;
+
 /**
 	* Compute Damerau-Levenshtein distance of two strings.
 	*
