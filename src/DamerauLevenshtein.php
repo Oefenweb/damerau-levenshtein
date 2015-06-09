@@ -191,7 +191,7 @@ class DamerauLevenshtein {
 		$oneSize = mb_strlen($this->__compOne, 'UTF-8');
 		$twoSize = mb_strlen($this->__compTwo, 'UTF-8');
 
-		// Amx cost, result value
+		// Max cost, result value
 		$maxCost = 0;
 
 		// Is substitution cheaper that delete + insert?
