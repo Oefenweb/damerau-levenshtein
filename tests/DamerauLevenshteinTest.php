@@ -7,7 +7,7 @@ class DamerauLevenshteinTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * Test for `getSimilarity`.
+     * Tests `getSimilarity`.
      *
      * @return void
      */
@@ -62,7 +62,7 @@ class DamerauLevenshteinTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test for `getInsCost`.
+     * Tests `getInsCost`.
      *
      * @return void
      */
@@ -98,7 +98,7 @@ class DamerauLevenshteinTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test for `getDelCost`.
+     * Tests `getDelCost`.
      *
      * @return void
      */
@@ -134,7 +134,7 @@ class DamerauLevenshteinTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test for `getSubCost`.
+     * Tests `getSubCost`.
      *
      * @return void
      */
@@ -170,7 +170,7 @@ class DamerauLevenshteinTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test for `getTransCost`.
+     * Tests `getTransCost`.
      *
      * @return void
      */
@@ -206,7 +206,7 @@ class DamerauLevenshteinTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test for `getRelativeDistance`.
+     * Tests `getRelativeDistance`.
      *
      * @return void
      */
@@ -253,6 +253,47 @@ class DamerauLevenshteinTest extends \PHPUnit_Framework_TestCase
         $result = $DamerauLevenshtein->getRelativeDistance();
         $expected = 0.33333333333333;
         $this->assertEquals($expected, $result, '', $delta);
+    }
+
+    /**
+     * Tests `getMatrix`.
+     *
+     * @return void
+     */
+    public function testGetMatrix()
+    {
+        list($firstString, $secondString) = $this->getDefaultStrings();
+
+        $DamerauLevenshtein = new DamerauLevenshtein($firstString, $secondString);
+        $actual = $DamerauLevenshtein->getMatrix();
+        $expected = array(
+            array(0, 1, 2, 3),
+            array(1, 1, 2, 3),
+            array(2, 2, 2, 3),
+            array(3, 3, 3, 3)
+        );
+        $this->assertSame($expected, $actual);
+    }
+
+    /**
+     * Tests `displayMatrix`.
+     *
+     * @return void
+     */
+    public function testDisplayMatrix()
+    {
+        list($firstString, $secondString) = $this->getDefaultStrings();
+
+        $DamerauLevenshtein = new DamerauLevenshtein($firstString, $secondString);
+        $actual = $DamerauLevenshtein->displayMatrix();
+        $expected = implode('', array(
+            "  foo\n",
+            " 0123\n",
+            "b1123\n",
+            "a2223\n",
+            "r3333\n",
+        ));
+        $this->assertSame($expected, $actual);
     }
 
     /**

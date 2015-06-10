@@ -259,6 +259,8 @@ class DamerauLevenshtein
      */
     public function displayMatrix()
     {
+        $this->setupMatrix();
+
         $oneSize = mb_strlen($this->compOne, 'UTF-8');
         $twoSize = mb_strlen($this->compTwo, 'UTF-8');
 
