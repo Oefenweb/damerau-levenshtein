@@ -6,7 +6,7 @@ Get text similarity level with Damerau-Levenshtein distance.
 
 ## Requirements
 
-* PHP 5.3.10 or greater.
+* PHP 5.4.16 or greater.
 
 ## Installation
 

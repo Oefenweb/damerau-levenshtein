@@ -126,7 +126,7 @@ class DamerauLevenshtein
         $sub = 0;
         $ins = 0;
         $trans = 0;
-        $this->matrix = array(array());
+        $this->matrix = [[]];
 
         $oneSize = mb_strlen($this->compOne, 'UTF-8');
         $twoSize = mb_strlen($this->compTwo, 'UTF-8');
@@ -259,6 +259,8 @@ class DamerauLevenshtein
      */
     public function displayMatrix()
     {
+        $this->setupMatrix();
+
         $oneSize = mb_strlen($this->compOne, 'UTF-8');
         $twoSize = mb_strlen($this->compTwo, 'UTF-8');
 
