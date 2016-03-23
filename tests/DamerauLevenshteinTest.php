@@ -13,26 +13,26 @@ class DamerauLevenshteinTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSimilarity()
     {
-        $inputs = array(
-            array('foo', 'foo'),
-            array('foo', 'fooo'),
-            array('foo', 'bar'),
+        $inputs = [
+            ['foo', 'foo'],
+            ['foo', 'fooo'],
+            ['foo', 'bar'],
 
-            array('123', '12'),
-            array('qwe', 'qwa'),
-            array('awe', 'qwe'),
-            array('фыв', 'фыа'),
-            array('vvvqw', 'vvvwq'),
-            array('qw', 'wq'),
-            array('qq', 'ww'),
-            array('qw', 'qw'),
-            array('пионер', 'плеер'),
-            array('пионер', 'пионеер'),
-            array('пионер', 'поинер'),
-            array('pioner', 'poner'),
-            array('пионер', 'понер'),
-        );
-        $outputs = array(
+            ['123', '12'],
+            ['qwe', 'qwa'],
+            ['awe', 'qwe'],
+            ['фыв', 'фыа'],
+            ['vvvqw', 'vvvwq'],
+            ['qw', 'wq'],
+            ['qq', 'ww'],
+            ['qw', 'qw'],
+            ['пионер', 'плеер'],
+            ['пионер', 'пионеер'],
+            ['пионер', 'поинер'],
+            ['pioner', 'poner'],
+            ['пионер', 'понер'],
+        ];
+        $outputs = [
             0,
             1,
             3,
@@ -50,7 +50,7 @@ class DamerauLevenshteinTest extends \PHPUnit_Framework_TestCase
             1,
             1,
             1,
-        );
+        ];
 
         foreach ($inputs as $i => $input) {
             $DamerauLevenshtein = new DamerauLevenshtein($input[0], $input[1]);
@@ -266,12 +266,12 @@ class DamerauLevenshteinTest extends \PHPUnit_Framework_TestCase
 
         $DamerauLevenshtein = new DamerauLevenshtein($firstString, $secondString);
         $actual = $DamerauLevenshtein->getMatrix();
-        $expected = array(
-            array(0, 1, 2, 3),
-            array(1, 1, 2, 3),
-            array(2, 2, 2, 3),
-            array(3, 3, 3, 3)
-        );
+        $expected = [
+            [0, 1, 2, 3],
+            [1, 1, 2, 3],
+            [2, 2, 2, 3],
+            [3, 3, 3, 3]
+        ];
         $this->assertSame($expected, $actual);
     }
 
@@ -286,13 +286,13 @@ class DamerauLevenshteinTest extends \PHPUnit_Framework_TestCase
 
         $DamerauLevenshtein = new DamerauLevenshtein($firstString, $secondString);
         $actual = $DamerauLevenshtein->displayMatrix();
-        $expected = implode('', array(
+        $expected = implode('', [
             "  foo\n",
             " 0123\n",
             "b1123\n",
             "a2223\n",
             "r3333\n",
-        ));
+        ]);
         $this->assertSame($expected, $actual);
     }
 
@@ -308,7 +308,7 @@ class DamerauLevenshteinTest extends \PHPUnit_Framework_TestCase
         $subCost = 1;
         $transCost = 1;
 
-        return array($insCost, $delCost, $subCost, $transCost);
+        return [$insCost, $delCost, $subCost, $transCost];
     }
 
     /**
@@ -321,6 +321,6 @@ class DamerauLevenshteinTest extends \PHPUnit_Framework_TestCase
         $firstString = 'foo';
         $secondString = 'bar';
 
-        return array($firstString, $secondString);
+        return [$firstString, $secondString];
     }
 }
