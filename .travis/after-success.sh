@@ -7,6 +7,6 @@ set -o pipefail;
 thisFile="$(readlink -f ${0})";
 thisFilePath="$(dirname ${thisFile})";
 #
-if [ "${COVERALLS}" = '1' ]; then
-  vendor/bin/coveralls -c .coveralls.yml -v;
+if [ "${CODECOVERAGE}" = '1' ]; then
+  bash <(curl -s https://codecov.io/bash)
 fi
