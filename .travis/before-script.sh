@@ -13,5 +13,5 @@ composer install --no-ansi --no-progress --no-interaction --prefer-source;
 if [ "${PHPCS}" = '1' ]; then
   composer require --dev 'squizlabs/php_codesniffer=2.*';
 else
-  composer require --dev 'phpunit/phpunit=6.*';
+  composer require --dev 'phpunit/phpunit=4.*';
 fi
