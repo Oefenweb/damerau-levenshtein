@@ -14,7 +14,7 @@ Get text similarity level with Damerau-Levenshtein distance.
 
 ## License
 
-BSD
+MIT
 
 #### Author Information
 

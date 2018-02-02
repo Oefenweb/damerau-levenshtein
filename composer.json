@@ -6,7 +6,7 @@
 		"damerau", "levenshtein", "distance", "similarity"
 	],
 	"homepage": "http://github.com/Oefenweb/damerau-levenshtein",
-	"license": "BSD",
+	"license": "MIT",
 	"authors": [{
 			"name": "Ph4r05",
 			"homepage": "http://www.phpclasses.org/package/7021-PHP-Get-text-similarity-level-with-Damerau-Levenshtein.html"

@@ -97,6 +97,7 @@ class DamerauLevenshtein
     public function getMatrix()
     {
         $this->setupMatrix();
+
         return $this->matrix;
     }
 
@@ -168,17 +169,14 @@ class DamerauLevenshtein
                 $this->matrix[$i][$j] = min($del, $ins, $sub);
 
                 // Transposition cost
-                if (($i > 1) && ($j > 1)) {
+                if ($i > 1 && $j > 1) {
                     // Last two
                     $ccOne = mb_substr($this->compOne, $i - 2, 1, 'UTF-8');
                     $ccTwo = mb_substr($this->compTwo, $j - 2, 1, 'UTF-8');
 
                     if ($this->compare($cOne, $ccTwo) == 0 && $this->compare($ccOne, $cTwo) == 0) {
                         // Transposition cost is computed as minimal of two
-                        $this->matrix[$i][$j] = min(
-                            $this->matrix[$i][$j],
-                            $this->matrix[$i - 2][$j - 2] + $trans
-                        );
+                        $this->matrix[$i][$j] = min($this->matrix[$i][$j], $this->matrix[$i - 2][$j - 2] + $trans);
                     }
                 }
             }
@@ -199,9 +197,6 @@ class DamerauLevenshtein
     {
         $oneSize = mb_strlen($this->compOne, 'UTF-8');
         $twoSize = mb_strlen($this->compTwo, 'UTF-8');
-
-        // Max cost, result value
-        $maxCost = 0;
 
         // Is substitution cheaper that delete + insert?
         $subCost = min($this->subCost, $this->delCost + $this->insCost);
@@ -237,11 +232,11 @@ class DamerauLevenshtein
             $this->setupMatrix();
         }
 
-        return 1 - (($this->getSimilarity()) / $this->getMaximalDistance());
+        return 1 - ($this->getSimilarity() / $this->getMaximalDistance());
     }
 
     /**
-     * Compares two characters from string (this method may be overriden in child class).
+     * Compares two characters from string (this method may be overridden in child class).
      *
      * @param string $firstCharacter First character
      * @param string $secondCharacter Second character
@@ -264,19 +259,19 @@ class DamerauLevenshtein
         $oneSize = mb_strlen($this->compOne, 'UTF-8');
         $twoSize = mb_strlen($this->compTwo, 'UTF-8');
 
-        $out = '  ' . $this->compOne . "\n";
+        $out = '  ' . $this->compOne . PHP_EOL;
         for ($y = 0; $y <= $twoSize; $y += 1) {
             if ($y - 1 < 0) {
                 $out .= ' ';
             } else {
-                $out .= (mb_substr($this->compTwo, $y - 1, 1, 'UTF-8'));
+                $out .= mb_substr($this->compTwo, $y - 1, 1, 'UTF-8');
             }
 
             for ($x = 0; $x <= $oneSize; $x += 1) {
                 $out .= $this->matrix[$x][$y];
             }
 
-            $out .= "\n";
+            $out .= PHP_EOL;
         }
 
         return $out;
@@ -300,7 +295,7 @@ class DamerauLevenshtein
      */
     public function setInsCost($insCost)
     {
-        $this->calculated = ($insCost == $this->insCost) ? $this->calculated : false;
+        $this->calculated = $insCost == $this->insCost ? $this->calculated : false;
         $this->insCost = $insCost;
     }
 
@@ -322,7 +317,7 @@ class DamerauLevenshtein
      */
     public function setDelCost($delCost)
     {
-        $this->calculated = ($delCost == $this->delCost) ? $this->calculated : false;
+        $this->calculated = $delCost == $this->delCost ? $this->calculated : false;
         $this->delCost = $delCost;
     }
 
@@ -344,7 +339,7 @@ class DamerauLevenshtein
      */
     public function setSubCost($subCost)
     {
-        $this->calculated = ($subCost == $this->subCost) ? $this->calculated : false;
+        $this->calculated = $subCost == $this->subCost ? $this->calculated : false;
         $this->subCost = $subCost;
     }
 
@@ -366,7 +361,7 @@ class DamerauLevenshtein
      */
     public function setTransCost($transCost)
     {
-        $this->calculated = ($transCost == $this->transCost) ? $this->calculated : false;
+        $this->calculated = $transCost == $this->transCost ? $this->calculated : false;
         $this->transCost = $transCost;
     }
 }
