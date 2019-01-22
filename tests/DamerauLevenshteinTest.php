@@ -2,8 +2,9 @@
 namespace Oefenweb\DamerauLevenshtein\Test;
 
 use Oefenweb\DamerauLevenshtein\DamerauLevenshtein;
+use PHPUnit\Framework\TestCase;
 
-class DamerauLevenshteinTest extends \PHPUnit_Framework_TestCase
+class DamerauLevenshteinTest extends TestCase
 {
 
     /**
