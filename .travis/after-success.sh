@@ -8,5 +8,5 @@ thisFile="$(readlink -f ${0})";
 thisFilePath="$(dirname ${thisFile})";
 #
 if [ "${CODECOVERAGE}" = '1' ]; then
-  bash <(curl -s https://codecov.io/bash)
+  bash <(curl -sSL https://codecov.io/bash)
 fi
