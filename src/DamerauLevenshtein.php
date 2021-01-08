@@ -149,13 +149,15 @@ class DamerauLevenshtein
 
         $oneSize = $this->compOneLength;
         $twoSize = $this->compTwoLength;
-        for ($i = 0; $i <= $oneSize; ++$i) {
-            $this->matrix[$i][0] = $i > 0 ? $this->matrix[$i - 1][0] + $this->delCost : 0;
+
+        $this->matrix[0][0] = 0;
+        for ($i = 1; $i <= $oneSize; ++$i) {
+            $this->matrix[$i][0] = $this->matrix[$i - 1][0] + $this->delCost;
         }
 
-        for ($i = 0; $i <= $twoSize; ++$i) {
+        for ($i = 1; $i <= $twoSize; ++$i) {
             // Insertion actualy
-            $this->matrix[0][$i] = $i > 0 ? $this->matrix[0][$i - 1] + $this->insCost : 0;
+            $this->matrix[0][$i] = $this->matrix[0][$i - 1] + $this->insCost;
         }
 
         for ($i = 1; $i <= $oneSize; ++$i) {
