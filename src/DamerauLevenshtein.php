@@ -96,7 +96,9 @@ class DamerauLevenshtein
      */
     public function getMatrix()
     {
-        $this->setupMatrix();
+        if (!$this->calculated) {
+            $this->setupMatrix();
+        }
 
         return $this->matrix;
     }
