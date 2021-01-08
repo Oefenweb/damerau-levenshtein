@@ -112,7 +112,7 @@ class DamerauLevenshtein
      */
     public function getMatrix()
     {
-        if (!$this->calculated) {
+        if ($this->calculated === false) {
             $this->setupMatrix();
         }
 
@@ -126,7 +126,7 @@ class DamerauLevenshtein
      */
     public function getSimilarity()
     {
-        if (!$this->calculated) {
+        if ($this->calculated === false) {
             $this->setupMatrix();
         }
 
@@ -149,24 +149,24 @@ class DamerauLevenshtein
 
         $oneSize = $this->compOneLength;
         $twoSize = $this->compTwoLength;
-        for ($i = 0; $i <= $oneSize; $i += 1) {
+        for ($i = 0; $i <= $oneSize; ++$i) {
             $this->matrix[$i][0] = $i > 0 ? $this->matrix[$i - 1][0] + $this->delCost : 0;
         }
 
-        for ($i = 0; $i <= $twoSize; $i += 1) {
+        for ($i = 0; $i <= $twoSize; ++$i) {
             // Insertion actualy
             $this->matrix[0][$i] = $i > 0 ? $this->matrix[0][$i - 1] + $this->insCost : 0;
         }
 
-        for ($i = 1; $i <= $oneSize; $i += 1) {
+        for ($i = 1; $i <= $oneSize; ++$i) {
             // Curchar for the first string
             $cOne = mb_substr($this->compOne, $i - 1, 1, 'UTF-8');
-            for ($j = 1; $j <= $twoSize; $j += 1) {
+            for ($j = 1; $j <= $twoSize; ++$j) {
                 // Curchar for the second string
                 $cTwo = mb_substr($this->compTwo, $j - 1, 1, 'UTF-8');
 
                 // Compute substitution cost
-                if ($this->compare($cOne, $cTwo) == 0) {
+                if ($this->compare($cOne, $cTwo) === 0) {
                     $cost = 0;
                     $trans = 0;
                 } else {
@@ -192,7 +192,7 @@ class DamerauLevenshtein
                     $ccOne = mb_substr($this->compOne, $i - 2, 1, 'UTF-8');
                     $ccTwo = mb_substr($this->compTwo, $j - 2, 1, 'UTF-8');
 
-                    if ($this->compare($cOne, $ccTwo) == 0 && $this->compare($ccOne, $cTwo) == 0) {
+                    if ($this->compare($cOne, $ccTwo) === 0 && $this->compare($ccOne, $cTwo) === 0) {
                         // Transposition cost is computed as minimal of two
                         $this->matrix[$i][$j] = min($this->matrix[$i][$j], $this->matrix[$i - 2][$j - 2] + $trans);
                     }
@@ -246,7 +246,7 @@ class DamerauLevenshtein
      */
     public function getRelativeDistance()
     {
-        if (!$this->calculated) {
+        if ($this->calculated === false) {
             $this->setupMatrix();
         }
 
@@ -278,14 +278,14 @@ class DamerauLevenshtein
         $twoSize = $this->compTwoLength;
 
         $out = '  ' . $this->compOne . PHP_EOL;
-        for ($y = 0; $y <= $twoSize; $y += 1) {
+        for ($y = 0; $y <= $twoSize; ++$y) {
             if ($y - 1 < 0) {
                 $out .= ' ';
             } else {
                 $out .= mb_substr($this->compTwo, $y - 1, 1, 'UTF-8');
             }
 
-            for ($x = 0; $x <= $oneSize; $x += 1) {
+            for ($x = 0; $x <= $oneSize; ++$x) {
                 $out .= $this->matrix[$x][$y];
             }
 
@@ -313,7 +313,7 @@ class DamerauLevenshtein
      */
     public function setInsCost($insCost)
     {
-        $this->calculated = $insCost == $this->insCost ? $this->calculated : false;
+        $this->calculated = $insCost === $this->insCost && $this->calculated;
         $this->insCost = $insCost;
     }
 
@@ -335,7 +335,7 @@ class DamerauLevenshtein
      */
     public function setDelCost($delCost)
     {
-        $this->calculated = $delCost == $this->delCost ? $this->calculated : false;
+        $this->calculated = $delCost === $this->delCost && $this->calculated;
         $this->delCost = $delCost;
     }
 
@@ -357,7 +357,7 @@ class DamerauLevenshtein
      */
     public function setSubCost($subCost)
     {
-        $this->calculated = $subCost == $this->subCost ? $this->calculated : false;
+        $this->calculated = $subCost === $this->subCost && $this->calculated;
         $this->subCost = $subCost;
     }
 
@@ -379,7 +379,7 @@ class DamerauLevenshtein
      */
     public function setTransCost($transCost)
     {
-        $this->calculated = $transCost == $this->transCost ? $this->calculated : false;
+        $this->calculated = $transCost === $this->transCost && $this->calculated;
         $this->transCost = $transCost;
     }
 }
