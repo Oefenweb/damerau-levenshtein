@@ -25,6 +25,20 @@ class DamerauLevenshtein
     private $compTwo;
 
     /**
+     * Length of first string.
+     *
+     * @var int
+     */
+    private $compOneLength;
+
+    /**
+     * Length of second string.
+     *
+     * @var int
+     */
+    private $compTwoLength;
+
+    /**
      * Matrix for Damerau Levenshtein distance dynamic programming computation.
      *
      * @var int[][]
@@ -80,7 +94,9 @@ class DamerauLevenshtein
     {
         if (!empty($firstString) || !empty($secondString)) {
             $this->compOne = $firstString;
+            $this->compOneLength = mb_strlen($this->compOne, 'UTF-8');
             $this->compTwo = $secondString;
+            $this->compTwoLength = mb_strlen($this->compTwo, 'UTF-8');
         }
 
         $this->insCost = $insCost;
@@ -114,7 +130,7 @@ class DamerauLevenshtein
             $this->setupMatrix();
         }
 
-        return $this->matrix[mb_strlen($this->compOne, 'UTF-8')][mb_strlen($this->compTwo, 'UTF-8')];
+        return $this->matrix[$this->compOneLength][$this->compTwoLength];
     }
 
     /**
@@ -131,8 +147,8 @@ class DamerauLevenshtein
         $trans = 0;
         $this->matrix = [[]];
 
-        $oneSize = mb_strlen($this->compOne, 'UTF-8');
-        $twoSize = mb_strlen($this->compTwo, 'UTF-8');
+        $oneSize = $this->compOneLength;
+        $twoSize = $this->compTwoLength;
         for ($i = 0; $i <= $oneSize; $i += 1) {
             $this->matrix[$i][0] = $i > 0 ? $this->matrix[$i - 1][0] + $this->delCost : 0;
         }
@@ -197,8 +213,8 @@ class DamerauLevenshtein
      */
     public function getMaximalDistance()
     {
-        $oneSize = mb_strlen($this->compOne, 'UTF-8');
-        $twoSize = mb_strlen($this->compTwo, 'UTF-8');
+        $oneSize = $this->compOneLength;
+        $twoSize = $this->compTwoLength;
 
         // Is substitution cheaper that delete + insert?
         $subCost = min($this->subCost, $this->delCost + $this->insCost);
@@ -258,8 +274,8 @@ class DamerauLevenshtein
     {
         $this->setupMatrix();
 
-        $oneSize = mb_strlen($this->compOne, 'UTF-8');
-        $twoSize = mb_strlen($this->compTwo, 'UTF-8');
+        $oneSize = $this->compOneLength;
+        $twoSize = $this->compTwoLength;
 
         $out = '  ' . $this->compOne . PHP_EOL;
         for ($y = 0; $y <= $twoSize; $y += 1) {
