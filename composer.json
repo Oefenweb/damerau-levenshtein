@@ -16,8 +16,16 @@
 		}
 	],
 	"require": {
-		"php": ">=7.0.0",
-		"composer/installers": "~1.0"
+		"php": ">=7.1.0",
+		"composer/installers": "~1.0",
+		"ext-mbstring": "*"
+	},
+	"require-dev": {
+		"oefenweb/cakephp-codesniffer": "^2.0",
+		"phpmd/phpmd": "^2.0",
+		"sebastian/phpcpd": "^4.0",
+		"phpunit/phpunit": "^7.5",
+		"phpstan/phpstan": "^0.12.66"
 	},
 	"support": {
 		"issues": "https://github.com/Oefenweb/damerau-levenshtein/issues",

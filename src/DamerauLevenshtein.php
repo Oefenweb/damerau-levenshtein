@@ -25,6 +25,20 @@ class DamerauLevenshtein
     private $compTwo;
 
     /**
+     * Length of first string.
+     *
+     * @var int
+     */
+    private $compOneLength = 0;
+
+    /**
+     * Length of second string.
+     *
+     * @var int
+     */
+    private $compTwoLength = 0;
+
+    /**
      * Matrix for Damerau Levenshtein distance dynamic programming computation.
      *
      * @var int[][]
@@ -76,11 +90,19 @@ class DamerauLevenshtein
      * @param int $subCost Substitution cost
      * @param int $transCost Transposition cost
      */
-    public function __construct($firstString, $secondString, $insCost = 1, $delCost = 1, $subCost = 1, $transCost = 1)
-    {
+    public function __construct(
+        string $firstString,
+        string $secondString,
+        int $insCost = 1,
+        int $delCost = 1,
+        int $subCost = 1,
+        int $transCost = 1
+    ) {
         if (!empty($firstString) || !empty($secondString)) {
             $this->compOne = $firstString;
+            $this->compOneLength = (int)mb_strlen($this->compOne, 'UTF-8');
             $this->compTwo = $secondString;
+            $this->compTwoLength = (int)mb_strlen($this->compTwo, 'UTF-8');
         }
 
         $this->insCost = $insCost;
@@ -94,9 +116,11 @@ class DamerauLevenshtein
      *
      * @return int[][] matrix
      */
-    public function getMatrix()
+    public function getMatrix(): array
     {
-        $this->setupMatrix();
+        if (!$this->calculated) {
+            $this->setupMatrix();
+        }
 
         return $this->matrix;
     }
@@ -106,49 +130,44 @@ class DamerauLevenshtein
      *
      * @return int
      */
-    public function getSimilarity()
+    public function getSimilarity(): int
     {
         if (!$this->calculated) {
             $this->setupMatrix();
         }
 
-        return $this->matrix[mb_strlen($this->compOne, 'UTF-8')][mb_strlen($this->compTwo, 'UTF-8')];
+        return $this->matrix[$this->compOneLength][$this->compTwoLength];
     }
 
     /**
      * Procedure to compute matrix for given input strings.
      *
      * @return void
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    private function setupMatrix()
+    private function setupMatrix(): void
     {
-        $cost = -1;
-        $del = 0;
-        $sub = 0;
-        $ins = 0;
-        $trans = 0;
         $this->matrix = [[]];
 
-        $oneSize = mb_strlen($this->compOne, 'UTF-8');
-        $twoSize = mb_strlen($this->compTwo, 'UTF-8');
-        for ($i = 0; $i <= $oneSize; $i += 1) {
+        for ($i = 0; $i <= $this->compOneLength; $i += 1) {
+            // @phan-suppress-next-line PhanTypeInvalidDimOffset
             $this->matrix[$i][0] = $i > 0 ? $this->matrix[$i - 1][0] + $this->delCost : 0;
         }
 
-        for ($i = 0; $i <= $twoSize; $i += 1) {
+        for ($i = 0; $i <= $this->compTwoLength; $i += 1) {
             // Insertion actualy
             $this->matrix[0][$i] = $i > 0 ? $this->matrix[0][$i - 1] + $this->insCost : 0;
         }
 
-        for ($i = 1; $i <= $oneSize; $i += 1) {
+        for ($i = 1; $i <= $this->compOneLength; $i += 1) {
             // Curchar for the first string
-            $cOne = mb_substr($this->compOne, $i - 1, 1, 'UTF-8');
-            for ($j = 1; $j <= $twoSize; $j += 1) {
+            $cOne = (string)mb_substr($this->compOne, $i - 1, 1, 'UTF-8');
+            for ($j = 1; $j <= $this->compTwoLength; $j += 1) {
                 // Curchar for the second string
-                $cTwo = mb_substr($this->compTwo, $j - 1, 1, 'UTF-8');
+                $cTwo = (string)mb_substr($this->compTwo, $j - 1, 1, 'UTF-8');
 
                 // Compute substitution cost
-                if ($this->compare($cOne, $cTwo) == 0) {
+                if ($this->compare($cOne, $cTwo) === 0) {
                     $cost = 0;
                     $trans = 0;
                 } else {
@@ -157,9 +176,13 @@ class DamerauLevenshtein
                 }
 
                 // Deletion cost
+                // @phan-suppress-next-line PhanTypeInvalidDimOffset, PhanTypeInvalidLeftOperandOfAdd
                 $del = $this->matrix[$i - 1][$j] + $this->delCost;
 
                 // Insertion cost
+
+                // @codingStandardsIgnoreLine Generic.Files.LineLength
+                // @phan-suppress-next-line PhanTypeArraySuspiciousNull, PhanTypeInvalidDimOffset, PhanTypeInvalidLeftOperandOfAdd
                 $ins = $this->matrix[$i][$j - 1] + $this->insCost;
 
                 // Substitution cost, 0 if same
@@ -171,11 +194,14 @@ class DamerauLevenshtein
                 // Transposition cost
                 if ($i > 1 && $j > 1) {
                     // Last two
-                    $ccOne = mb_substr($this->compOne, $i - 2, 1, 'UTF-8');
-                    $ccTwo = mb_substr($this->compTwo, $j - 2, 1, 'UTF-8');
+                    // @phan-suppress-next-line PhanPartialTypeMismatchArgumentInternal
+                    $ccOne = (string)mb_substr($this->compOne, $i - 2, 1, 'UTF-8');
+                    // @phan-suppress-next-line PhanPartialTypeMismatchArgumentInternal
+                    $ccTwo = (string)mb_substr($this->compTwo, $j - 2, 1, 'UTF-8');
 
-                    if ($this->compare($cOne, $ccTwo) == 0 && $this->compare($ccOne, $cTwo) == 0) {
+                    if ($this->compare($cOne, $ccTwo) === 0 && $this->compare($ccOne, $cTwo) === 0) {
                         // Transposition cost is computed as minimal of two
+                        // @phan-suppress-next-line PhanPartialTypeMismatchArgumentInternal
                         $this->matrix[$i][$j] = min($this->matrix[$i][$j], $this->matrix[$i - 2][$j - 2] + $trans);
                     }
                 }
@@ -193,24 +219,21 @@ class DamerauLevenshtein
      *
      * @return int
      */
-    public function getMaximalDistance()
+    public function getMaximalDistance(): int
     {
-        $oneSize = mb_strlen($this->compOne, 'UTF-8');
-        $twoSize = mb_strlen($this->compTwo, 'UTF-8');
-
         // Is substitution cheaper that delete + insert?
         $subCost = min($this->subCost, $this->delCost + $this->insCost);
 
         // Get common size
-        $minSize = min($oneSize, $twoSize);
-        $maxSize = max($oneSize, $twoSize);
+        $minSize = min($this->compOneLength, $this->compTwoLength);
+        $maxSize = max($this->compOneLength, $this->compTwoLength);
         $extraSize = $maxSize - $minSize;
 
         // On common size perform substitution / delete + insert, what is cheaper
         $maxCost = $subCost * $minSize;
 
         // On resulting do insert/delete
-        if ($oneSize > $twoSize) {
+        if ($this->compOneLength > $this->compTwoLength) {
             // Delete extra characters
             $maxCost += $extraSize * $this->delCost;
         } else {
@@ -218,21 +241,21 @@ class DamerauLevenshtein
             $maxCost += $extraSize * $this->insCost;
         }
 
-        return $maxCost;
+        return (int)$maxCost;
     }
 
     /**
      * Returns relative distance of input strings (computed with maximal possible distance).
      *
-     * @return int
+     * @return float
      */
-    public function getRelativeDistance()
+    public function getRelativeDistance(): float
     {
         if (!$this->calculated) {
             $this->setupMatrix();
         }
 
-        return 1 - ($this->getSimilarity() / $this->getMaximalDistance());
+        return (float)(1 - ($this->getSimilarity() / $this->getMaximalDistance()));
     }
 
     /**
@@ -242,7 +265,7 @@ class DamerauLevenshtein
      * @param string $secondCharacter Second character
      * @return int
      */
-    protected function compare($firstCharacter, $secondCharacter)
+    protected function compare(string $firstCharacter, string $secondCharacter): int
     {
         return strcmp($firstCharacter, $secondCharacter);
     }
@@ -252,22 +275,21 @@ class DamerauLevenshtein
      *
      * @return string
      */
-    public function displayMatrix()
+    public function displayMatrix(): string
     {
-        $this->setupMatrix();
-
-        $oneSize = mb_strlen($this->compOne, 'UTF-8');
-        $twoSize = mb_strlen($this->compTwo, 'UTF-8');
+        if (!$this->calculated) {
+            $this->setupMatrix();
+        }
 
         $out = '  ' . $this->compOne . PHP_EOL;
-        for ($y = 0; $y <= $twoSize; $y += 1) {
+        for ($y = 0; $y <= $this->compTwoLength; $y += 1) {
             if ($y - 1 < 0) {
                 $out .= ' ';
             } else {
-                $out .= mb_substr($this->compTwo, $y - 1, 1, 'UTF-8');
+                $out .= (string)mb_substr($this->compTwo, $y - 1, 1, 'UTF-8');
             }
 
-            for ($x = 0; $x <= $oneSize; $x += 1) {
+            for ($x = 0; $x <= $this->compOneLength; $x += 1) {
                 $out .= $this->matrix[$x][$y];
             }
 
@@ -282,7 +304,7 @@ class DamerauLevenshtein
      *
      * @return int
      */
-    public function getInsCost()
+    public function getInsCost(): int
     {
         return $this->insCost;
     }
@@ -293,9 +315,9 @@ class DamerauLevenshtein
      * @param int $insCost Cost of character insertion
      * @return void
      */
-    public function setInsCost($insCost)
+    public function setInsCost(int $insCost): void
     {
-        $this->calculated = $insCost == $this->insCost ? $this->calculated : false;
+        $this->calculated = $insCost === $this->insCost ? $this->calculated : false;
         $this->insCost = $insCost;
     }
 
@@ -304,7 +326,7 @@ class DamerauLevenshtein
      *
      * @return int
      */
-    public function getDelCost()
+    public function getDelCost(): int
     {
         return $this->delCost;
     }
@@ -315,9 +337,9 @@ class DamerauLevenshtein
      * @param int $delCost Cost of character deletion
      * @return void
      */
-    public function setDelCost($delCost)
+    public function setDelCost(int $delCost): void
     {
-        $this->calculated = $delCost == $this->delCost ? $this->calculated : false;
+        $this->calculated = $delCost === $this->delCost ? $this->calculated : false;
         $this->delCost = $delCost;
     }
 
@@ -326,7 +348,7 @@ class DamerauLevenshtein
      *
      * @return int
      */
-    public function getSubCost()
+    public function getSubCost(): int
     {
         return $this->subCost;
     }
@@ -337,9 +359,9 @@ class DamerauLevenshtein
      * @param int $subCost Cost of character substitution
      * @return void
      */
-    public function setSubCost($subCost)
+    public function setSubCost(int $subCost): void
     {
-        $this->calculated = $subCost == $this->subCost ? $this->calculated : false;
+        $this->calculated = $subCost === $this->subCost ? $this->calculated : false;
         $this->subCost = $subCost;
     }
 
@@ -348,7 +370,7 @@ class DamerauLevenshtein
      *
      * @return int
      */
-    public function getTransCost()
+    public function getTransCost(): int
     {
         return $this->transCost;
     }
@@ -359,9 +381,9 @@ class DamerauLevenshtein
      * @param int $transCost Cost of character transposition
      * @return void
      */
-    public function setTransCost($transCost)
+    public function setTransCost(int $transCost): void
     {
-        $this->calculated = $transCost == $this->transCost ? $this->calculated : false;
+        $this->calculated = $transCost === $this->transCost ? $this->calculated : false;
         $this->transCost = $transCost;
     }
 }
