@@ -1,0 +1,196 @@
+---
+name: CI
+'on':
+  pull_request:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: '30 1 * * 3'
+
+jobs:
+
+  syntax:
+    name: Syntax
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - php: 7.1
+          - php: 7.2
+          - php: 7.3
+          - php: 7.4
+    steps:
+      - name: Check out the codebase
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "${{ matrix.php }}"
+          coverage: none
+
+      - name: Lint code
+        run: |
+          [ "$(find . \( -path './vendor' \) -prune -o -type f \( -name '*.ctp' -o -name '*.php' \) -print0 | xargs -0 --no-run-if-empty -L1 -i'{}' php -l '{}' | grep -vc 'No syntax errors')" -eq 0 ]
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    needs:
+      - syntax
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - php: 7.1
+          - php: 7.2
+          - php: 7.3
+          - php: 7.4
+    steps:
+      - name: Check out the codebase
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "${{ matrix.php }}"
+          coverage: none
+
+      - name: Install dependencies
+        run: |
+          composer install --dev --no-ansi --no-progress --no-interaction --quiet;
+
+      - name: Test code
+        run: |
+          vendor/bin/phpunit --stderr --configuration phpunit.xml;
+
+  cs:
+    name: Cs
+    runs-on: ubuntu-latest
+    needs:
+      - test
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - php: 7.4
+            phpcs: true
+          - php: 7.4
+            phpmd: true
+          - php: 7.4
+            phpcpd: true
+          - php: 7.4
+            phpstan: true
+          - php: 7.4
+            phan: true
+    steps:
+      - name: Check out the codebase
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "${{ matrix.php }}"
+          coverage: none
+          extensions: ast
+          tools: cs2pr
+
+      - name: Install dependencies
+        run: |
+          composer install --dev --no-ansi --no-progress --no-interaction --quiet;
+
+      - name: Run phpcs
+        run: |
+          excludePaths=( \
+            '**/vendor' \
+            '**/.phan' \
+          );
+          excludePathsJoined=$(printf ",%s" "${excludePaths[@]}");
+          excludePathsJoined=${excludePathsJoined:1};
+
+          extensions=( \
+              'php' \
+              'ctp' \
+          );
+          extensionsJoined=$(printf ",%s" "${extensions[@]}");
+          extensionsJoined=${extensionsJoined:1};
+
+          vendor/bin/phpcs . \
+            --standard=PSR2 \
+            --extensions="${extensionsJoined}" \
+            --ignore="${excludePathsJoined}" \
+            --report=checkstyle | cs2pr;
+        if: matrix.phpcs
+
+      - name: Run phpcsmd
+        run: |
+          excludePaths=( \
+            '**/vendor' \
+          );
+          excludePathsJoined=$(printf ",%s" "${excludePaths[@]}");
+          excludePathsJoined=${excludePathsJoined:1};
+
+          vendor/bin/phpmd . xml phpmd.xml --suffixes php --exclude "${excludePathsJoined}" | cs2pr;
+        if: matrix.phpmd
+
+      - name: Run phpcpd
+        run: |
+          vendor/bin/phpcpd . \
+            --names '*.php,*.ctp' \
+            --exclude vendor \
+            --no-interaction \
+             --quiet \
+            --fuzzy \
+            --log-pmd 'php://stdout' | cs2pr;
+        if: matrix.phpcpd
+
+      - name: Run phpstan
+        run: |
+          vendor/bin/phpstan analyse -c phpstan.neon \
+            --no-ansi \
+            --no-progress \
+            --no-interaction \
+            --error-format=checkstyle | cs2pr;
+        if: matrix.phpstan
+
+      - name: Install phan
+        run: |
+          composer require --dev --no-ansi --no-progress --no-interaction --quiet 'phan/phan=^2.7.3';
+        if: matrix.phan
+
+      - name: Run phan
+        run: |
+          vendor/bin/phan -d . --no-color --no-progress-bar --output-mode checkstyle | cs2pr;
+        if: matrix.phan
+
+  coverage:
+    name: Coverage
+    runs-on: ubuntu-latest
+    needs:
+      - cs
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - php: 7.4
+    steps:
+      - name: Check out the codebase
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "${{ matrix.php }}"
+
+      - name: Install dependencies
+        run: |
+          composer install --dev --no-ansi --no-progress --no-interaction --quiet;
+
+      - name: Generate coverage report
+        run: |
+          phpdbg -qrr vendor/bin/phpunit --stderr --configuration phpunit.xml --coverage-clover build/logs/clover.xml;
+
+      - name: Upload coverage report
+        run: |
+          bash <(curl -sSL https://codecov.io/bash);

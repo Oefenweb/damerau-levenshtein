@@ -6,60 +6,49 @@ use PHPUnit\Framework\TestCase;
 
 class DamerauLevenshteinTest extends TestCase
 {
+    /**
+     * Data provider for `getSimilarity`.
+     *
+     * @return array
+     */
+    public function getSimilarityProvider(): array
+    {
+        return [
+            ['foo', 'foo', 0],
+            ['foo', 'fooo', 1],
+            ['foo', 'bar', 3],
+
+            ['123', '12', 1],
+            ['qwe', 'qwa', 1],
+            ['awe', 'qwe', 1],
+            ['фыв', 'фыа', 1],
+            ['vvvqw', 'vvvwq', 1],
+            ['qw', 'wq', 1],
+            ['qq', 'ww', 2],
+            ['qw', 'qw', 0],
+            ['пионер', 'плеер', 3],
+            ['пионер', 'пионеер', 1],
+            ['пионер', 'поинер', 1],
+            ['pioner', 'poner', 1],
+            ['пионер', 'понер', 1],
+        ];
+    }
 
     /**
      * Tests `getSimilarity`.
      *
+     * @param string $firstString
+     * @param string $secondString
+     * @param int $expected
      * @return void
+     * @dataProvider getSimilarityProvider
      */
-    public function testGetSimilarity()
+    public function testGetSimilarity(string $firstString, string $secondString, int $expected): void
     {
-        $inputs = [
-            ['foo', 'foo'],
-            ['foo', 'fooo'],
-            ['foo', 'bar'],
+        $DamerauLevenshtein = new DamerauLevenshtein($firstString, $secondString);
+        $actual = $DamerauLevenshtein->getSimilarity();
 
-            ['123', '12'],
-            ['qwe', 'qwa'],
-            ['awe', 'qwe'],
-            ['фыв', 'фыа'],
-            ['vvvqw', 'vvvwq'],
-            ['qw', 'wq'],
-            ['qq', 'ww'],
-            ['qw', 'qw'],
-            ['пионер', 'плеер'],
-            ['пионер', 'пионеер'],
-            ['пионер', 'поинер'],
-            ['pioner', 'poner'],
-            ['пионер', 'понер'],
-        ];
-        $outputs = [
-            0,
-            1,
-            3,
-
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
-            2,
-            0,
-            3,
-            1,
-            1,
-            1,
-            1,
-        ];
-
-        foreach ($inputs as $i => $input) {
-            $DamerauLevenshtein = new DamerauLevenshtein($input[0], $input[1]);
-            $result = $DamerauLevenshtein->getSimilarity();
-            $expected = $outputs[$i];
-
-            $this->assertSame($expected, $result);
-        }
+        $this->assertSame($expected, $actual);
     }
 
     /**
@@ -67,7 +56,7 @@ class DamerauLevenshteinTest extends TestCase
      *
      * @return void
      */
-    public function testGetInsCost()
+    public function testGetInsCost(): void
     {
         list($firstString, $secondString) = $this->getDefaultStrings();
         list($insCost, $delCost, $subCost, $transCost) = $this->getDefaultCosts();
@@ -75,10 +64,10 @@ class DamerauLevenshteinTest extends TestCase
         // Default insert cost
 
         $DamerauLevenshtein = new DamerauLevenshtein($firstString, $secondString);
-        $result = $DamerauLevenshtein->getInsCost();
+        $actual = $DamerauLevenshtein->getInsCost();
         $expected = $insCost;
 
-        $this->assertSame($expected, $result);
+        $this->assertSame($expected, $actual);
 
         // Non-default insert cost
 
@@ -92,10 +81,26 @@ class DamerauLevenshteinTest extends TestCase
             $subCost,
             $transCost
         );
-        $result = $DamerauLevenshtein->getInsCost();
+        $actual = $DamerauLevenshtein->getInsCost();
         $expected = $insCost;
 
-        $this->assertSame($expected, $result);
+        $this->assertSame($expected, $actual);
+    }
+
+    /**
+     * Tests `setInsCost`.
+     *
+     * @param int $cost
+     * @return void
+     * @dataProvider setXCostProvider
+     */
+    public function testSetInsCost(int $cost): void
+    {
+        list($firstString, $secondString) = $this->getDefaultStrings();
+
+        $DamerauLevenshtein = new DamerauLevenshtein($firstString, $secondString);
+        $DamerauLevenshtein->setInsCost($cost);
+        $this->assertSame($cost, $DamerauLevenshtein->getInsCost());
     }
 
     /**
@@ -103,7 +108,7 @@ class DamerauLevenshteinTest extends TestCase
      *
      * @return void
      */
-    public function testGetDelCost()
+    public function testGetDelCost(): void
     {
         list($firstString, $secondString) = $this->getDefaultStrings();
         list($insCost, $delCost, $subCost, $transCost) = $this->getDefaultCosts();
@@ -111,10 +116,10 @@ class DamerauLevenshteinTest extends TestCase
         // Default delete cost
 
         $DamerauLevenshtein = new DamerauLevenshtein($firstString, $secondString);
-        $result = $DamerauLevenshtein->getDelCost();
+        $actual = $DamerauLevenshtein->getDelCost();
         $expected = $delCost;
 
-        $this->assertSame($expected, $result);
+        $this->assertSame($expected, $actual);
 
         // Non-default delete cost
 
@@ -128,10 +133,39 @@ class DamerauLevenshteinTest extends TestCase
             $subCost,
             $transCost
         );
-        $result = $DamerauLevenshtein->getDelCost();
+        $actual = $DamerauLevenshtein->getDelCost();
         $expected = $delCost;
 
-        $this->assertSame($expected, $result);
+        $this->assertSame($expected, $actual);
+    }
+
+    /**
+     * Data provider for `set<x>Cost`.
+     *
+     * @return array
+     */
+    public function setXCostProvider(): array
+    {
+        return [
+            [1],
+            [2],
+        ];
+    }
+
+    /**
+     * Tests `setDelCost`.
+     *
+     * @param int $cost
+     * @return void
+     * @dataProvider setXCostProvider
+     */
+    public function testSetDelCost(int $cost): void
+    {
+        list($firstString, $secondString) = $this->getDefaultStrings();
+
+        $DamerauLevenshtein = new DamerauLevenshtein($firstString, $secondString);
+        $DamerauLevenshtein->setDelCost($cost);
+        $this->assertSame($cost, $DamerauLevenshtein->getDelCost());
     }
 
     /**
@@ -139,7 +173,7 @@ class DamerauLevenshteinTest extends TestCase
      *
      * @return void
      */
-    public function testGetSubCost()
+    public function testGetSubCost(): void
     {
         list($firstString, $secondString) = $this->getDefaultStrings();
         list($insCost, $delCost, $subCost, $transCost) = $this->getDefaultCosts();
@@ -147,10 +181,10 @@ class DamerauLevenshteinTest extends TestCase
         // Default substitution cost
 
         $DamerauLevenshtein = new DamerauLevenshtein($firstString, $secondString);
-        $result = $DamerauLevenshtein->getSubCost();
+        $actual = $DamerauLevenshtein->getSubCost();
         $expected = $subCost;
 
-        $this->assertSame($expected, $result);
+        $this->assertSame($expected, $actual);
 
         // Non-default substitution cost
 
@@ -164,10 +198,26 @@ class DamerauLevenshteinTest extends TestCase
             $subCost,
             $transCost
         );
-        $result = $DamerauLevenshtein->getSubCost();
+        $actual = $DamerauLevenshtein->getSubCost();
         $expected = $subCost;
 
-        $this->assertSame($expected, $result);
+        $this->assertSame($expected, $actual);
+    }
+
+    /**
+     * Tests `setSubCost`.
+     *
+     * @param int $cost
+     * @return void
+     * @dataProvider setXCostProvider
+     */
+    public function testSetSubCost(int $cost): void
+    {
+        list($firstString, $secondString) = $this->getDefaultStrings();
+
+        $DamerauLevenshtein = new DamerauLevenshtein($firstString, $secondString);
+        $DamerauLevenshtein->setSubCost($cost);
+        $this->assertSame($cost, $DamerauLevenshtein->getSubCost());
     }
 
     /**
@@ -175,7 +225,7 @@ class DamerauLevenshteinTest extends TestCase
      *
      * @return void
      */
-    public function testGetTransCost()
+    public function testGetTransCost(): void
     {
         list($firstString, $secondString) = $this->getDefaultStrings();
         list($insCost, $delCost, $subCost, $transCost) = $this->getDefaultCosts();
@@ -183,10 +233,10 @@ class DamerauLevenshteinTest extends TestCase
         // Default transposition cost
 
         $DamerauLevenshtein = new DamerauLevenshtein($firstString, $secondString);
-        $result = $DamerauLevenshtein->getTransCost();
+        $actual = $DamerauLevenshtein->getTransCost();
         $expected = $transCost;
 
-        $this->assertSame($expected, $result);
+        $this->assertSame($expected, $actual);
 
         // Non-default transposition cost
 
@@ -200,60 +250,60 @@ class DamerauLevenshteinTest extends TestCase
             $subCost,
             $transCost
         );
-        $result = $DamerauLevenshtein->getTransCost();
+        $actual = $DamerauLevenshtein->getTransCost();
         $expected = $transCost;
 
-        $this->assertSame($expected, $result);
+        $this->assertSame($expected, $actual);
+    }
+
+    /**
+     * Tests `setTransCost`.
+     *
+     * @param int $cost
+     * @return void
+     * @dataProvider setXCostProvider
+     */
+    public function testSetTransCost(int $cost): void
+    {
+        list($firstString, $secondString) = $this->getDefaultStrings();
+
+        $DamerauLevenshtein = new DamerauLevenshtein($firstString, $secondString);
+        $DamerauLevenshtein->setTransCost($cost);
+        $this->assertSame($cost, $DamerauLevenshtein->getTransCost());
+    }
+
+    /**
+     * Data provider for `getRelativeDistance`.
+     *
+     * @return array
+     */
+    public function getRelativeDistanceProvider(): array
+    {
+        return [
+            ['O\'Callaghan', 'OCallaghan', 0.90909090909091],
+            ['Thom', 'Mira', 0.0],
+            ['Oldeboom', 'Ven', 0.125],
+            ['ven', 'Ven', 0.66666666666667],
+            ['enV', 'Ven', 0.3333333333333],
+        ];
     }
 
     /**
      * Tests `getRelativeDistance`.
      *
+     * @param string $firstString
+     * @param string $secondString
+     * @param float $expected
      * @return void
+     * @dataProvider getRelativeDistanceProvider
      */
-    public function testGetRelativeDistance()
+    public function testGetRelativeDistance(string $firstString, string $secondString, float $expected): void
     {
         $delta = pow(10, -4);
 
-        $firstString = 'O\'Callaghan';
-        $secondString = 'OCallaghan';
-
         $DamerauLevenshtein = new DamerauLevenshtein($firstString, $secondString);
-        $result = $DamerauLevenshtein->getRelativeDistance();
-        $expected = 0.90909090909091;
-        $this->assertEquals($expected, $result, '', $delta);
-
-        $firstString = 'Thom';
-        $secondString = 'Mira';
-
-        $DamerauLevenshtein = new DamerauLevenshtein($firstString, $secondString);
-        $result = $DamerauLevenshtein->getRelativeDistance();
-        $expected = 0.0;
-        $this->assertEquals($expected, $result, '', $delta);
-
-        $firstString = 'Oldeboom';
-        $secondString = 'Ven';
-
-        $DamerauLevenshtein = new DamerauLevenshtein($firstString, $secondString);
-        $result = $DamerauLevenshtein->getRelativeDistance();
-        $expected = 0.125;
-        $this->assertEquals($expected, $result, '', $delta);
-
-        $firstString = 'ven';
-        $secondString = 'Ven';
-
-        $DamerauLevenshtein = new DamerauLevenshtein($firstString, $secondString);
-        $result = $DamerauLevenshtein->getRelativeDistance();
-        $expected = 0.66666666666667;
-        $this->assertEquals($expected, $result, '', $delta);
-
-        $firstString = 'enV';
-        $secondString = 'Ven';
-
-        $DamerauLevenshtein = new DamerauLevenshtein($firstString, $secondString);
-        $result = $DamerauLevenshtein->getRelativeDistance();
-        $expected = 0.33333333333333;
-        $this->assertEquals($expected, $result, '', $delta);
+        $actual = $DamerauLevenshtein->getRelativeDistance();
+        $this->assertEquals($expected, $actual, '', $delta);
     }
 
     /**
@@ -261,7 +311,7 @@ class DamerauLevenshteinTest extends TestCase
      *
      * @return void
      */
-    public function testGetMatrix()
+    public function testGetMatrix(): void
     {
         list($firstString, $secondString) = $this->getDefaultStrings();
 
@@ -281,7 +331,7 @@ class DamerauLevenshteinTest extends TestCase
      *
      * @return void
      */
-    public function testDisplayMatrix()
+    public function testDisplayMatrix(): void
     {
         list($firstString, $secondString) = $this->getDefaultStrings();
 
@@ -302,7 +352,7 @@ class DamerauLevenshteinTest extends TestCase
      *
      * @return array Costs (insert, delete, substitution, transposition)
      */
-    protected function getDefaultCosts()
+    protected function getDefaultCosts(): array
     {
         $insCost = 1;
         $delCost = 1;
@@ -317,7 +367,7 @@ class DamerauLevenshteinTest extends TestCase
      *
      * @return array Strings (foo, bar)
      */
-    protected function getDefaultStrings()
+    protected function getDefaultStrings(): array
     {
         $firstString = 'foo';
         $secondString = 'bar';
